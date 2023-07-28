@@ -8,7 +8,7 @@ from setup import args, distro
 
 #   1. Define variables
 ARCH = "amd64"
-RELEASE = "sid"
+RELEASE = "bookworm"
 KERNEL = ""
 packages = f"linux-image-{ARCH} btrfs-progs sudo curl dhcpcd5 locales nano \
             network-manager" # console-setup firmware-linux firmware-linux-nonfree os-prober
@@ -54,6 +54,9 @@ def main():
         commands = f'''
         apt-get -y update -oAcquire::AllowInsecureRepositories=true
         apt-get -y -f install deb-multimedia-keyring --allow-unauthenticated
+        # Added the 2 lines below per deb-multimedia repo if the key cannot be found.
+        wget https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb
+        dpkg -i deb-multimedia-keyring_2016.8.1_all.deb
         apt-get -y full-upgrade --allow-unauthenticated
         apt-get -y install --no-install-recommends --fix-broken {packages}
         '''
