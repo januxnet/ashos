@@ -7,8 +7,8 @@
 
 main() {
     if [ -z "$HOME" ]; then HOME=~ ; fi
-    RELEASE="sid"
-    prep_packages=(btrfs-progs cryptsetup debootstrap dialog dosfstools efibootmgr git ntp parted tmux zip unzip tar)
+    RELEASE="bookworm"
+    prep_packages="btrfs-progs cryptsetup debootstrap dialog dosfstools efibootmgr git ntp parted tmux zip unzip tar"
 
   # attempt to install and if errors sync time and database
     apt-get -y --fix-broken install $prep_packages
@@ -19,7 +19,9 @@ main() {
     git config --global --add safe.directory $HOME/ashos # prevent fatal error "unsafe repository is owned by someone else"
     #cd ashos
     dialog --stdout --msgbox "CAUTION: If you hit Okay, your HDD will be partitioned. You should confirm you edited script in prep folder!" 0 0
-    /bin/bash ./src/prep/parted_gpt_example.sh $2
+    # Uncomment the line below if you want to prepare/partition the drive automatically - not recommend for a disk with data
+    #/bin/bash ./src/prep/parted_gpt_example.sh $2
+    # Uncomment the line below if you want this script to also run setup.py, example: setup.py root-partition disk efi-partition
     #python3 setup.py $1 $2 $3
 }
 
